@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Form from "./Form";
+import Table from "./Table";
+import Tabs from "./Tabs";
+import { data, users } from "./data";
 
-function App() {
+
+const App: React.FC = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [adddata, setAdddata] = useState<any>({});
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+  
+const tabs = [
+  { label: "Tab 1", data },
+  { label: "Tab 2", data: [...users, users.push(adddata)] },
+];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="flex m-5">
+        {isSidebarOpen && (
+          <div className="w-1/2 h-screen">
+            {/* content for sidebar */}
+            <Form isSidebarOpen={setIsSidebarOpen} setAdddata={setAdddata} />
+          </div>
+        )}
+        <div className="flex-grow">
+          {/* main content */}
+          {!isSidebarOpen && (
+            <button
+              onClick={toggleSidebar}
+              className="bg-indigo-400 p-1 rounded text-white"
+            >
+              Toggle Sidebar
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="p-4">
+        <Tabs tabs={tabs} />
+      </div>
+    </>
   );
-}
+};
 
 export default App;
